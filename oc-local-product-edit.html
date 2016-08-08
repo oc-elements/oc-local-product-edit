@@ -1,4 +1,6 @@
 <link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../oc-product-api/oc-product-api.html">
+<link rel="import" href="../oc-product-edit/oc-product-edit.html">
 
 <!--
 `oc-local-product-edit`
@@ -14,7 +16,10 @@ Element to edit local product details on the Ordercloud platform
         display: block;
       }
     </style>
-    <h2>Hello [[prop1]]</h2>
+    <oc-product-api id="prodApi"></oc-product-api>
+    <oc-product-edit>
+
+    </oc-product-edit>
   </template>
 
   <script>
@@ -23,10 +28,12 @@ Element to edit local product details on the Ordercloud platform
       is: 'oc-local-product-edit',
 
       properties: {
-        prop1: {
-          type: String,
-          value: 'oc-local-product-edit',
-        },
+        organisationId: Number,
+        productId : Number,
+        loading: {
+          type: Boolean,
+          notify: true
+        }
       },
 
     });
