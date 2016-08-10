@@ -5,16 +5,24 @@
   "dependencies": {
     "polymer": "Polymer/polymer#^1.4.0",
     "oc-product-api": "git://github.com/oc-elements/oc-product-api#1.x",
-    "oc-product-edit" : "git://github.com/oc-elements/oc-product-edit#1.x",
+    "oc-product-edit": "git://github.com/oc-elements/oc-product-edit#1.x",
     "oc-local-product-extras-edit": "git://github.com/oc-elements/oc-local-product-extras-edit#1.x",
-    "oc-local-product-options-edit": "git://github.com/oc-elements/oc-local-product-options-edit#1.x",
-    "oc-product-option-api": "git://github.com/oc-elements/oc-product-option-api#1.x",
-    "oc-local-product-extras-api": "git://github.com/oc-elements/oc-local-product-extras-api#1.x"
+    "oc-local-product-options-edit": "git://github.com/oc-elements/oc-local-product-options-edit#1.x"
   },
   "devDependencies": {
     "iron-component-page": "PolymerElements/iron-component-page#^1.0.0",
     "iron-demo-helpers": "PolymerElements/iron-demo-helpers#^1.0.0",
     "web-component-tester": "^4.0.0",
     "webcomponentsjs": "webcomponents/webcomponentsjs#^0.7.0"
-  }
+  },
+  "homepage": "https://github.com/oc-elements/oc-local-product-edit",
+  "_release": "0727183e40",
+  "_resolution": {
+    "type": "branch",
+    "branch": "1.x",
+    "commit": "0727183e4085689b32a2bfb12e118e3f95082e3e"
+  },
+  "_source": "git://github.com/oc-elements/oc-local-product-edit.git",
+  "_target": "1.x",
+  "_originalSource": "git://github.com/oc-elements/oc-local-product-edit"
 }
