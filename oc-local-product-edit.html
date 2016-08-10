@@ -17,7 +17,7 @@ Element to edit local product details on the Ordercloud platform
       }
     </style>
     <oc-product-api id="prodApi"></oc-product-api>
-    <oc-product-edit>
+    <oc-product-edit selected="{{selected}}">
 
     </oc-product-edit>
   </template>
@@ -30,6 +30,10 @@ Element to edit local product details on the Ordercloud platform
       properties: {
         organisationId: Number,
         productId : Number,
+        selected: {
+          type: String,
+          notify: true
+        },
         loading: {
           type: Boolean,
           notify: true
