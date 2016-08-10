@@ -1,12 +1,17 @@
 <link rel="import" href="../polymer/polymer.html">
 <link rel="import" href="../oc-product-api/oc-product-api.html">
+<link rel="import" href="../oc-product-option-api/oc-product-option-api.html">
+<link rel="import" href="../oc-local-product-extras-api/oc-local-product-extras-api.html">
 <link rel="import" href="../oc-product-edit/oc-product-edit.html">
+
+<link rel="import" href="../oc-local-product-extras-edit/oc-local-product-extras-edit.html">
+<link rel="import" href="../oc-local-product-options-edit/oc-local-product-options-edit.html">
 
 <!--
 `oc-local-product-edit`
 Element to edit local product details on the Ordercloud platform
 
-@demo demo/index.html 
+@demo demo/index.html
 -->
 
 <dom-module id="oc-local-product-edit">
@@ -16,9 +21,14 @@ Element to edit local product details on the Ordercloud platform
         display: block;
       }
     </style>
-    <oc-product-api id="prodApi"></oc-product-api>
-    <oc-product-edit selected="{{selected}}">
 
+    <oc-product-api id="prodApi"></oc-product-api>
+    <oc-product-option-api id="optionsApi"></oc-product-option-api>
+    <oc-local-product-extras-api id="extrasApi"></oc-local-product-extras-api>
+
+    <oc-product-edit selected="{{selected}}">
+      <oc-local-product-options-edit id="options"></oc-local-product-options-edit>
+      <oc-local-product-extras-edit id="extras"></oc-local-product-extras-edit>
     </oc-product-edit>
   </template>
 
@@ -39,6 +49,17 @@ Element to edit local product details on the Ordercloud platform
           notify: true
         }
       },
+
+      observers: [
+        '_observeRoute(routeData)',
+        '_loadProductProperties(organisationId, productId)'
+      ],
+
+      _loadProductProperties : function(organisationId, productId) {
+        this.loading = true;
+
+      },
+
 
     });
   </script>
