@@ -27,7 +27,7 @@ Element to edit local product details on the Ordercloud platform
     <oc-local-product-extras-api id="extrasApi"></oc-local-product-extras-api>
 
     <oc-product-edit selected="{{selected}}">
-      <oc-local-product-options-edit id="options"></oc-local-product-options-edit>
+      <oc-local-product-options-edit organisation-id="[[organisationId]]" product-id="[[productId]]"  loading={{loading}} id="options"></oc-local-product-options-edit>
       <oc-local-product-extras-edit id="extras"></oc-local-product-extras-edit>
     </oc-product-edit>
   </template>
@@ -58,7 +58,32 @@ Element to edit local product details on the Ordercloud platform
       _loadProductProperties : function(organisationId, productId) {
         this.loading = true;
 
+        var getSelectedOptions = this.$.options.getSelectedOptions(productId);
+        var getSelectableOptions = this.$.options.getSelectableOptions(organisationId);
+
+        Promise.all([getSelectedOptions, getSelectableOptions])
+                .then(function(request) {
+                  this.$.options.originalList = request[0].response.results.slice();
+                  this.$.options.selectedList = request[0].response.results;
+                  this.$.options.selectableList = this._filterList(request[0].response.results, request[1].response.results);
+                }.bind(this))
+                .catch(this.fire.bind(this, 'extra-set-error', 'Failed to load extra sets'))
+                .finally(this.set.bind(this, 'loading', false));
       },
+
+      _filterList : function(selectedArr, selectableArr) {
+
+        return selectableArr.filter(function(obj){
+          var notSelected = true;
+          for(var i=0; i<selectedArr.length; i++){
+            if (obj.options.length <= 0 || obj.id === selectedArr[i].id) {
+              notSelected = false;
+            }
+          }
+
+          return notSelected;
+        })
+      }
 
 
     });
