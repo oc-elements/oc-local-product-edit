@@ -66,8 +66,9 @@ Element to edit local product details on the Ordercloud platform
                 var getSelectableOptions = this.$.options.getSelectableOptions(organisationId);
                 var getSelectedExtras = this.$.extras.getSelectedExtras(productId);
                 var getSelectableExtras = this.$.extras.getSelectableExtras(organisationId);
+                var getProductAttributes = this.$.attributes.getProductAttributes();
 
-                Promise.all([getSelectedOptions, getSelectableOptions, getSelectedExtras, getSelectableExtras])
+                Promise.all([getSelectedOptions, getSelectableOptions, getSelectedExtras, getSelectableExtras, getProductAttributes])
                         .then(function(request) {
 //                  option sets
                             this.$.options.originalList = request[0].response.results.slice();
@@ -78,6 +79,9 @@ Element to edit local product details on the Ordercloud platform
                             this.$.extras.originalList = request[2].response.results.slice();
                             this.$.extras.selectedList = request[2].response.results;
                             this.$.extras.selectableList = this._filterList(request[2].response.results, request[3].response.results);
+
+//                            attributes
+                            this.$.attributes.allAttributes = request[4].response.results;
                         }.bind(this))
                         .catch(this.fire.bind(this, 'extra-set-error', 'Failed to load extra sets'))
                         .finally(this.set.bind(this, 'loading', false));
