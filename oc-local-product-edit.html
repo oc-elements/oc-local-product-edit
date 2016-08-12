@@ -3,11 +3,13 @@
 <link rel="import" href="../oc-product-option-api/oc-product-option-api.html">
 <link rel="import" href="../oc-local-product-extras-api/oc-local-product-extras-api.html">
 <link rel="import" href="../oc-product-attribute-api/oc-product-attribute-api.html">
+<link rel="import" href="../oc-product-tag-api/oc-product-tag-api.html">
 <link rel="import" href="../oc-product-edit/oc-product-edit.html">
 
 <link rel="import" href="../oc-local-product-extras-edit/oc-local-product-extras-edit.html">
 <link rel="import" href="../oc-local-product-options-edit/oc-local-product-options-edit.html">
 <link rel="import" href="../oc-local-product-attributes-edit/oc-local-product-attributes-edit.html">
+<link rel="import" href="../oc-local-product-tags-edit/oc-local-product-tags-edit.html">
 
 <!--
 `oc-local-product-edit`
@@ -28,11 +30,13 @@ Element to edit local product details on the Ordercloud platform
         <oc-product-option-api id="optionsApi"></oc-product-option-api>
         <oc-local-product-extras-api id="extrasApi"></oc-local-product-extras-api>
         <oc-product-attribute-api id="attrApi"></oc-product-attribute-api>
+        <oc-product-tag-api id="attrApi"></oc-product-tag-api>
 
         <oc-product-edit selected="{{selected}}">
             <oc-local-product-options-edit organisation-id="[[organisationId]]" product-id="[[productId]]"  loading={{loading}} id="options"></oc-local-product-options-edit>
             <oc-local-product-extras-edit organisation-id="[[organisationId]]" product-id="[[productId]]"  loading={{loading}} id="extras"></oc-local-product-extras-edit>
             <oc-local-product-attributes-edit organisation-id="[[organisationId]]" product-id="[[productId]]"  loading={{loading}} id="attributes"></oc-local-product-attributes-edit>
+            <oc-local-product-tags-edit organisation-id="[[organisationId]]" product-id="[[productId]]"  loading={{loading}} id="tags"></oc-local-product-tags-edit>
         </oc-product-edit>
     </template>
 
@@ -80,7 +84,7 @@ Element to edit local product details on the Ordercloud platform
                             this.$.extras.selectedList = request[2].response.results;
                             this.$.extras.selectableList = this._filterList(request[2].response.results, request[3].response.results);
 
-//                            attributes
+//                  attributes
                             this.$.attributes.allAttributes = request[4].response.results;
                         }.bind(this))
                         .catch(this.fire.bind(this, 'extra-set-error', 'Failed to load extra sets'))
