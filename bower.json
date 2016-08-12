@@ -13,7 +13,7 @@
 
     "oc-local-product-extras-edit": "git://github.com/oc-elements/oc-local-product-extras-edit#1.x",
     "oc-local-product-options-edit": "git://github.com/oc-elements/oc-local-product-options-edit#1.x",
-    "oc-local-product-tags-edit": "git://github.com/oc-elements/oc-local-product-options-edit#1.x",
+    "oc-local-product-tags-edit": "git://github.com/oc-elements/oc-local-product-tags-edit#1.x",
     "oc-local-product-attributes-edit": "git://github.com/oc-elements/oc-local-product-attributes-edit#1.x"
   },
   "devDependencies": {
