@@ -1,4 +1,5 @@
 <link rel="import" href="../polymer/polymer.html">
+
 <link rel="import" href="../oc-product-api/oc-product-api.html">
 <link rel="import" href="../oc-product-option-api/oc-product-option-api.html">
 <link rel="import" href="../oc-local-product-extras-api/oc-local-product-extras-api.html">
@@ -10,6 +11,7 @@
 <link rel="import" href="../oc-local-product-options-edit/oc-local-product-options-edit.html">
 <link rel="import" href="../oc-local-product-attributes-edit/oc-local-product-attributes-edit.html">
 <link rel="import" href="../oc-local-product-tags-edit/oc-local-product-tags-edit.html">
+<link rel="import" href="../oc-local-product-images-edit/oc-local-product-images-edit.html">
 
 <!--
 `oc-local-product-edit`
@@ -30,13 +32,14 @@ Element to edit local product details on the Ordercloud platform
         <oc-product-option-api id="optionsApi"></oc-product-option-api>
         <oc-local-product-extras-api id="extrasApi"></oc-local-product-extras-api>
         <oc-product-attribute-api id="attrApi"></oc-product-attribute-api>
-        <oc-product-tag-api id="attrApi"></oc-product-tag-api>
+        <oc-product-tag-api id="tagApi"></oc-product-tag-api>
 
         <oc-product-edit selected="{{selected}}">
             <oc-local-product-options-edit organisation-id="[[organisationId]]" product-id="[[productId]]"  loading={{loading}} id="options"></oc-local-product-options-edit>
             <oc-local-product-extras-edit organisation-id="[[organisationId]]" product-id="[[productId]]"  loading={{loading}} id="extras"></oc-local-product-extras-edit>
             <oc-local-product-attributes-edit organisation-id="[[organisationId]]" product="[[product]]" product-id="[[productId]]"  loading={{loading}} id="attributes"></oc-local-product-attributes-edit>
             <oc-local-product-tags-edit organisation-id="[[organisationId]]" product="[[product]]" product-id="[[productId]]"  loading={{loading}} id="tags"></oc-local-product-tags-edit>
+            <oc-local-product-images-edit organisation-id="[[organisationId]]" product="[[product]]" product-id="[[productId]]"  loading={{loading}} id="images"></oc-local-product-images-edit>
         </oc-product-edit>
     </template>
 
