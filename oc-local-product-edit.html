@@ -1,10 +1,5 @@
 <link rel="import" href="../polymer/polymer.html">
 
-<link rel="import" href="../oc-product-api/oc-product-api.html">
-<link rel="import" href="../oc-product-option-api/oc-product-option-api.html">
-<link rel="import" href="../oc-local-product-extras-api/oc-local-product-extras-api.html">
-<link rel="import" href="../oc-product-attribute-api/oc-product-attribute-api.html">
-<link rel="import" href="../oc-product-tag-api/oc-product-tag-api.html">
 <link rel="import" href="../oc-product-edit/oc-product-edit.html">
 
 <link rel="import" href="../oc-local-product-extras-edit/oc-local-product-extras-edit.html">
@@ -28,12 +23,6 @@ Element to edit local product details on the Ordercloud platform
             }
         </style>
 
-        <oc-product-api id="prodApi"></oc-product-api>
-        <oc-product-option-api id="optionsApi"></oc-product-option-api>
-        <oc-local-product-extras-api id="extrasApi"></oc-local-product-extras-api>
-        <oc-product-attribute-api id="attrApi"></oc-product-attribute-api>
-        <oc-product-tag-api id="tagApi"></oc-product-tag-api>
-
         <oc-product-edit selected="{{selected}}">
             <oc-local-product-options-edit organisation-id="[[organisationId]]" product-id="[[productId]]"  loading={{loading}} id="options"></oc-local-product-options-edit>
             <oc-local-product-extras-edit organisation-id="[[organisationId]]" product-id="[[productId]]"  loading={{loading}} id="extras"></oc-local-product-extras-edit>
@@ -52,82 +41,107 @@ Element to edit local product details on the Ordercloud platform
                 organisationId: Number,
                 productId : Number,
                 product: Object,
-                selected: {
-                    type: String,
-                    notify: true
-                },
+                selected: String,
                 loading: {
                     type: Boolean,
                     notify: true
                 }
             },
 
-            observers: [
-                '_observeRoute(routeData)',
-                '_loadProductProperties(organisationId, productId)'
-            ],
 
-            _loadProductProperties : function(organisationId, productId) {
-                this.loading = true;
-
-                var getSelectedOptions = this.$.options.getSelectedOptions(productId);
-                var getSelectableOptions = this.$.options.getSelectableOptions(organisationId);
-                var getSelectedExtras = this.$.extras.getSelectedExtras(productId);
-                var getSelectableExtras = this.$.extras.getSelectableExtras(organisationId);
-                var getProductAttributes = this.$.attributes.getProductAttributes();
-                var getAllProductTags = this.$.tags.getAllProductTags();
-                var getAllMenuTags = this.$.tags.getAllMenuTags();
-                var getProduct = this.$.prodApi.getProduct(productId);
-
-                Promise.all([
-                    getSelectedOptions,
-                    getSelectableOptions,
-                    getSelectedExtras,
-                    getSelectableExtras,
-                    getProductAttributes,
-                    getAllProductTags,
-                    getAllMenuTags,
-                    getProduct
-                ])
-                        .then(function(request) {
-//                  product
-                            this.product = request[7].response;
-//                  option sets
-                            this.$.options.originalList = request[0].response.results.slice();
-                            this.$.options.selectedList = request[0].response.results;
-                            this.$.options.selectableList = this._filterList(request[0].response.results, request[1].response.results);
-
-//                  extra sets
-                            this.$.extras.originalList = request[2].response.results.slice();
-                            this.$.extras.selectedList = request[2].response.results;
-                            this.$.extras.selectableList = this._filterList(request[2].response.results, request[3].response.results);
-
-//                  attributes
-                            this.$.attributes.allAttributes = request[4].response.results;
-
-//                  tags
-                            this.$.tags.allProductTags = request[5].response.results;
-                            this.$.tags.menuTags = request[6].response.results;
-                            this.$.tags.productTags = this.product.tags;
-
-                        }.bind(this))
-                        .catch(this.fire.bind(this, 'extra-set-error', 'Failed to load extra sets'))
-                        .finally(this.set.bind(this, 'loading', false));
+            listeners: {
+                'iron-select' : "_selectedTab"
             },
 
-            _filterList : function(selectedArr, selectableArr) {
+            refresh: function() {
+                var tab = this.selected || null;
 
-                return selectableArr.filter(function(obj){
-                    var notSelected = true;
-                    for(var i=0; i<selectedArr.length; i++){
-                        if (obj.options.length <= 0 || obj.id === selectedArr[i].id) {
-                            notSelected = false;
-                        }
-                    }
+                if(tab){
+                    this.$$('#'+tab).refresh();
+                } else {
+                    this._selectDefaultTab(tab, this.productId)
+                }
 
-                    return notSelected;
-                })
-            }
+            },
+
+            _selectedTab : function(e) {
+                var tabKey = e.detail.item.getAttribute('key') || null,
+                        productId =  this.productId || null;
+                if(productId && tabKey){
+                    this.fire('oc-page-to', '/edit/'+productId+'/'+tabKey);
+                }
+
+            },
+
+            _selectDefaultTab: function(tab, productId) {
+                if (!tab && productId) {
+                    this.fire('oc-page-to', '/edit/'+productId+'/products');
+                }
+            },
+
+//            _loadProductProperties : function(organisationId, productId) {
+//                this.loading = true;
+//
+//                this.$.images.refresh(productId);
+//
+//                var getSelectedOptions = this.$.options.getSelectedOptions(productId);
+//                var getSelectableOptions = this.$.options.getSelectableOptions(organisationId);
+//                var getSelectedExtras = this.$.extras.getSelectedExtras(productId);
+//                var getSelectableExtras = this.$.extras.getSelectableExtras(organisationId);
+//                var getProductAttributes = this.$.attributes.getProductAttributes();
+//                var getAllProductTags = this.$.tags.getAllProductTags();
+//                var getAllMenuTags = this.$.tags.getAllMenuTags();
+//                var getProduct = this.$.prodApi.getProduct(productId);
+//
+//                Promise.all([
+//                    getSelectedOptions,
+//                    getSelectableOptions,
+//                    getSelectedExtras,
+//                    getSelectableExtras,
+//                    getProductAttributes,
+//                    getAllProductTags,
+//                    getAllMenuTags,
+//                    getProduct
+//                ])
+//                        .then(function(request) {
+////                  product
+//                            this.product = request[7].response;
+////                  option sets
+//                            this.$.options.originalList = request[0].response.results.slice();
+//                            this.$.options.selectedList = request[0].response.results;
+//                            this.$.options.selectableList = this._filterList(request[0].response.results, request[1].response.results);
+//
+////                  extra sets
+//                            this.$.extras.originalList = request[2].response.results.slice();
+//                            this.$.extras.selectedList = request[2].response.results;
+//                            this.$.extras.selectableList = this._filterList(request[2].response.results, request[3].response.results);
+//
+////                  attributes
+//                            this.$.attributes.allAttributes = request[4].response.results;
+//
+////                  tags
+//                            this.$.tags.allProductTags = request[5].response.results;
+//                            this.$.tags.menuTags = request[6].response.results;
+//                            this.$.tags.productTags = this.product.tags;
+//
+//                        }.bind(this))
+//                        .catch(this.fire.bind(this, 'extra-set-error', 'Failed to load extra sets'))
+//                        .finally(this.set.bind(this, 'loading', false));
+//            },
+//
+//            _filterList : function(selectedArr, selectableArr) {
+//
+//                return selectableArr.filter(function(obj){
+//                    var notSelected = true;
+//                    for(var i=0; i<selectedArr.length; i++){
+//                        if (obj.options.length <= 0 || obj.id === selectedArr[i].id) {
+//                            notSelected = false;
+//                        }
+//                    }
+//
+//                    return notSelected;
+//                })
+//            }
 
 
         });
