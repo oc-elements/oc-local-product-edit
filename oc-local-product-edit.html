@@ -1,6 +1,7 @@
 <link rel="import" href="../polymer/polymer.html">
 
 <link rel="import" href="../oc-product-edit/oc-product-edit.html">
+<link rel="import" href="../oc-product-api/oc-product-api.html">
 
 <link rel="import" href="../oc-local-product-extras-edit/oc-local-product-extras-edit.html">
 <link rel="import" href="../oc-local-product-options-edit/oc-local-product-options-edit.html">
@@ -23,7 +24,10 @@ Element to edit local product details on the Ordercloud platform
             }
         </style>
 
+        <oc-product-api id="prodApi"></oc-product-api>
+
         <oc-product-edit selected="{{selected}}">
+            <oc-local-product-options-edit organisation-id="[[organisationId]]" product-id="[[productId]]"  loading={{loading}} id="product"></oc-local-product-options-edit>
             <oc-local-product-options-edit organisation-id="[[organisationId]]" product-id="[[productId]]"  loading={{loading}} id="options"></oc-local-product-options-edit>
             <oc-local-product-extras-edit organisation-id="[[organisationId]]" product-id="[[productId]]"  loading={{loading}} id="extras"></oc-local-product-extras-edit>
             <oc-local-product-attributes-edit organisation-id="[[organisationId]]" product="[[product]]" product-id="[[productId]]"  loading={{loading}} id="attributes"></oc-local-product-attributes-edit>
@@ -62,6 +66,8 @@ Element to edit local product details on the Ordercloud platform
                     this._selectDefaultTab(tab, this.productId)
                 }
 
+                this._getProduct(this.productId);
+
             },
 
             _selectedTab : function(e) {
@@ -77,6 +83,15 @@ Element to edit local product details on the Ordercloud platform
                 if (!tab && productId) {
                     this.fire('oc-page-to', '/edit/'+productId+'/products');
                 }
+            },
+
+            _getProduct : function(productId){
+                this.$.prodApi.getProduct(productId)
+                        .then(function(request) {
+                            console.log(request.response);
+                        }.bind(this))
+                        .catch(this.fire.bind(this, 'extra-set-error', 'Failed to load product data'))
+                        .finally(this.set.bind(this, 'loading', false));
             },
 
 //            _loadProductProperties : function(organisationId, productId) {
