@@ -31,7 +31,7 @@ Element to edit local product details on the Ordercloud platform
             <oc-local-product-options-edit organisation-id="[[organisationId]]" product-id="[[productId]]"  loading={{loading}} id="options"></oc-local-product-options-edit>
             <oc-local-product-extras-edit organisation-id="[[organisationId]]" product-id="[[productId]]"  loading={{loading}} id="extras"></oc-local-product-extras-edit>
             <oc-local-product-attributes-edit organisation-id="[[organisationId]]" product="[[product]]" product-id="[[productId]]"  loading={{loading}} id="attributes"></oc-local-product-attributes-edit>
-            <oc-local-product-tags-edit organisation-id="[[organisationId]]" product="[[product]]" product-id="[[productId]]"  loading={{loading}} id="tags"></oc-local-product-tags-edit>
+            <oc-local-product-tags-edit organisation-id="[[organisationId]]" product="[[product]]"  loading={{loading}} id="tags"></oc-local-product-tags-edit>
             <oc-local-product-images-edit organisation-id="[[organisationId]]" product="[[product]]" product-id="[[productId]]"  loading={{loading}} id="images"></oc-local-product-images-edit>
         </oc-product-edit>
     </template>
@@ -66,8 +66,9 @@ Element to edit local product details on the Ordercloud platform
                     this._selectDefaultTab(tab, this.productId)
                 }
 
-                this._getProduct(this.productId);
-
+                if(!this.product) {
+                    this._getProduct(this.productId);
+                }
             },
 
             _selectedTab : function(e) {
@@ -89,9 +90,9 @@ Element to edit local product details on the Ordercloud platform
                 this.$.prodApi.getProduct(productId)
                         .then(function(request) {
                             console.log(request.response);
+                            this.product = request.response;
                         }.bind(this))
                         .catch(this.fire.bind(this, 'extra-set-error', 'Failed to load product data'))
-                        .finally(this.set.bind(this, 'loading', false));
             },
 
 //            _loadProductProperties : function(organisationId, productId) {
