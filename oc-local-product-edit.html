@@ -3,6 +3,7 @@
 <link rel="import" href="../oc-product-edit/oc-product-edit.html">
 <link rel="import" href="../oc-product-api/oc-product-api.html">
 
+<link rel="import" href="../oc-local-product-product-edit/oc-local-product-product-edit.html">
 <link rel="import" href="../oc-local-product-extras-edit/oc-local-product-extras-edit.html">
 <link rel="import" href="../oc-local-product-options-edit/oc-local-product-options-edit.html">
 <link rel="import" href="../oc-local-product-attributes-edit/oc-local-product-attributes-edit.html">
@@ -27,12 +28,12 @@ Element to edit local product details on the Ordercloud platform
         <oc-product-api id="prodApi"></oc-product-api>
 
         <oc-product-edit selected="{{selected}}">
-            <oc-local-product-options-edit organisation-id="[[organisationId]]" product-id="[[productId]]"  loading={{loading}} id="product"></oc-local-product-options-edit>
-            <oc-local-product-options-edit organisation-id="[[organisationId]]" product-id="[[productId]]"  loading={{loading}} id="options"></oc-local-product-options-edit>
-            <oc-local-product-extras-edit organisation-id="[[organisationId]]" product-id="[[productId]]"  loading={{loading}} id="extras"></oc-local-product-extras-edit>
-            <oc-local-product-attributes-edit organisation-id="[[organisationId]]" product="[[product]]" product-id="[[productId]]"  loading={{loading}} id="attributes"></oc-local-product-attributes-edit>
+            <oc-local-product-product-edit organisation-id="[[organisationId]]" product="[[product]]"  loading={{loading}} id="product"></oc-local-product-product-edit>
+            <oc-local-product-options-edit organisation-id="[[organisationId]]" product="[[product]]"  loading={{loading}} id="options"></oc-local-product-options-edit>
+            <oc-local-product-extras-edit organisation-id="[[organisationId]]" product="[[product]]"  loading={{loading}} id="extras"></oc-local-product-extras-edit>
+            <oc-local-product-attributes-edit organisation-id="[[organisationId]]" product="[[product]]"  loading={{loading}} id="attributes"></oc-local-product-attributes-edit>
             <oc-local-product-tags-edit organisation-id="[[organisationId]]" product="[[product]]"  loading={{loading}} id="tags"></oc-local-product-tags-edit>
-            <oc-local-product-images-edit organisation-id="[[organisationId]]" product="[[product]]" product-id="[[productId]]"  loading={{loading}} id="images"></oc-local-product-images-edit>
+            <oc-local-product-images-edit organisation-id="[[organisationId]]" product="[[product]]"  loading={{loading}} id="images"></oc-local-product-images-edit>
         </oc-product-edit>
     </template>
 
@@ -94,71 +95,6 @@ Element to edit local product details on the Ordercloud platform
                         }.bind(this))
                         .catch(this.fire.bind(this, 'extra-set-error', 'Failed to load product data'))
             },
-
-//            _loadProductProperties : function(organisationId, productId) {
-//                this.loading = true;
-//
-//                this.$.images.refresh(productId);
-//
-//                var getSelectedOptions = this.$.options.getSelectedOptions(productId);
-//                var getSelectableOptions = this.$.options.getSelectableOptions(organisationId);
-//                var getSelectedExtras = this.$.extras.getSelectedExtras(productId);
-//                var getSelectableExtras = this.$.extras.getSelectableExtras(organisationId);
-//                var getProductAttributes = this.$.attributes.getProductAttributes();
-//                var getAllProductTags = this.$.tags.getAllProductTags();
-//                var getAllMenuTags = this.$.tags.getAllMenuTags();
-//                var getProduct = this.$.prodApi.getProduct(productId);
-//
-//                Promise.all([
-//                    getSelectedOptions,
-//                    getSelectableOptions,
-//                    getSelectedExtras,
-//                    getSelectableExtras,
-//                    getProductAttributes,
-//                    getAllProductTags,
-//                    getAllMenuTags,
-//                    getProduct
-//                ])
-//                        .then(function(request) {
-////                  product
-//                            this.product = request[7].response;
-////                  option sets
-//                            this.$.options.originalList = request[0].response.results.slice();
-//                            this.$.options.selectedList = request[0].response.results;
-//                            this.$.options.selectableList = this._filterList(request[0].response.results, request[1].response.results);
-//
-////                  extra sets
-//                            this.$.extras.originalList = request[2].response.results.slice();
-//                            this.$.extras.selectedList = request[2].response.results;
-//                            this.$.extras.selectableList = this._filterList(request[2].response.results, request[3].response.results);
-//
-////                  attributes
-//                            this.$.attributes.allAttributes = request[4].response.results;
-//
-////                  tags
-//                            this.$.tags.allProductTags = request[5].response.results;
-//                            this.$.tags.menuTags = request[6].response.results;
-//                            this.$.tags.productTags = this.product.tags;
-//
-//                        }.bind(this))
-//                        .catch(this.fire.bind(this, 'extra-set-error', 'Failed to load extra sets'))
-//                        .finally(this.set.bind(this, 'loading', false));
-//            },
-//
-//            _filterList : function(selectedArr, selectableArr) {
-//
-//                return selectableArr.filter(function(obj){
-//                    var notSelected = true;
-//                    for(var i=0; i<selectedArr.length; i++){
-//                        if (obj.options.length <= 0 || obj.id === selectedArr[i].id) {
-//                            notSelected = false;
-//                        }
-//                    }
-//
-//                    return notSelected;
-//                })
-//            }
-
 
         });
     </script>
